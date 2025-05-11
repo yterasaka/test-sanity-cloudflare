@@ -9,6 +9,8 @@ import {toPlainText, type PortableTextBlock} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 
+export const runtime = 'edge'
+
 type Props = {
   params: Promise<{lang: string; slug: string}>
 }
