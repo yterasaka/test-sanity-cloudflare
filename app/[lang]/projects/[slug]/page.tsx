@@ -13,6 +13,8 @@ import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
+export const runtime = 'edge'
+
 type Props = {
   params: Promise<{lang: string; slug: string}>
 }
@@ -41,31 +43,6 @@ export async function generateMetadata(
         }
       : {},
   }
-}
-
-export async function generateStaticParams() {
-  const params: Array<{lang: string; slug: string}> = []
-
-  for (const language of i18n.supportedLanguages) {
-    const {data} = await sanityFetch({
-      query: slugsByTypeQuery,
-      params: {type: 'project', language: language.id},
-      stega: false,
-      perspective: 'published',
-    })
-
-    for (const item of data) {
-      if (item.slug) {
-        params.push({
-          lang: language.id,
-          slug: item.slug,
-        })
-      }
-    }
-  }
-
-  console.log('Generated static params for projects:', params)
-  return params
 }
 
 export default async function ProjectSlugRoute({params}: Props) {

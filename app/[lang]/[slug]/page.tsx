@@ -9,6 +9,8 @@ import {toPlainText, type PortableTextBlock} from 'next-sanity'
 import {draftMode} from 'next/headers'
 import {notFound} from 'next/navigation'
 
+export const runtime = 'edge'
+
 type Props = {
   params: Promise<{lang: string; slug: string}>
 }
@@ -28,31 +30,6 @@ export async function generateMetadata(
     title: page?.title,
     description: page?.overview ? toPlainText(page.overview) : (await parent).description,
   }
-}
-
-export async function generateStaticParams() {
-  const params: Array<{lang: string; slug: string}> = []
-
-  for (const language of i18n.supportedLanguages) {
-    const {data} = await sanityFetch({
-      query: slugsByTypeQuery,
-      params: {type: 'page', language: language.id},
-      stega: false,
-      perspective: 'published',
-    })
-
-    for (const item of data) {
-      if (item.slug) {
-        params.push({
-          lang: language.id,
-          slug: item.slug,
-        })
-      }
-    }
-  }
-
-  console.log('Generated static params for pages:', params)
-  return params
 }
 
 export default async function PageSlugRoute({params}: Props) {
