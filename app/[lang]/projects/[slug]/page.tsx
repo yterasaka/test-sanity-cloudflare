@@ -13,8 +13,6 @@ import {draftMode} from 'next/headers'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
 
-export const runtime = 'edge'
-
 type Props = {
   params: Promise<{lang: string; slug: string}>
 }
